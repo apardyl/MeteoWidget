@@ -2,8 +2,6 @@
 \    / _  _ _|_|_  _  _  \    /. _| _  _ _|_
  \/\/ (/_(_| | | |(/_|    \/\/ |(_|(_|(/_ |  for MChE
                                     _|
-
- *
  *
  * Weather Widget 1.0 for MChE
  *
@@ -23,19 +21,19 @@
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
  Descripcion: This program is a web interface for MChE weather database, designed to be embedded into third party websites.
 
-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
  Installation:
-  - Embedded: Copy all files except index.html into your website directory and insert widget elements from index.html into your website files.
-  - Standalone: Rename widget index.html and copy all files to your website.
+  - Embedded: Copy all widget files except index.html into your website directory and insert widget elements from index.html into your website.
+  - Standalone: Copy all widget files to your website directory.
 
  Uninstallation: Remove all widget files and other elements.
 
-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
  Q/A:
  - Q: Will this program work with other weather databases?
@@ -47,8 +45,8 @@
  - Q: WTF?
    A: IDK!
 
-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
 This program is based upon Highcharts (http://www.highcharts.com/) and jQuery (http://jquery.com/).
 
-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
