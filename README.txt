@@ -3,7 +3,7 @@
  \/\/ (/_(_| | | |(/_|    \/\/ |(_|(_|(/_ |  for MChE
                                     _|
  *
- * Weather Widget 1.0 for MChE
+ * Weather Widget 1.0.1 for MChE
  *
  *
  * Copyright (c) 2014 Adam Pardyl

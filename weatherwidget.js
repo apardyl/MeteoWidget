@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.0 for MChE
+ * Weather Widget 1.0.1 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -84,7 +84,7 @@ function GetCurrentWeather(refresh) {
         $('#ww-t0').text('Temperatura punktu rosy: ' + weather[0].data.t0 + '°C');
         $('#ww-ra').text('Opad dobowy: ' + weather[0].data.ra + ' mm');
         $('#ww-r1').text('Opad w ostatniej godzinie: ' + weather[0].data.r1 + ' mm');
-        $('#ww-wpch').text('Wysokość podstawy chmur: ' + (Math.round(parseFloat(((weather[0].data.ta - weather[0].data.t0) * 125) + weather[0].data.h0))) + ' m n.p.m.');
+        $('#ww-wpch').text('Wysokość podstawy chmur: ' + (Math.round(((parseFloat(weather[0].data.ta) - parseFloat(weather[0].data.t0)) * 125) + parseFloat(weather[0].data.h0))) + ' m n.p.m.');
         var wwdate = ParseDate(weather[0].time);
         $('#ww-date').text('Ostatni pomiar: ' + ('0' + wwdate.getHours()).slice(-2) + ':' + ('0' + wwdate.getMinutes()).slice(-2) + ' ' + ('0' + wwdate.getDate()).slice(-2) + '.' + ('0' + (wwdate.getMonth() + 1)).slice(-2) + '.' + wwdate.getFullYear());
     });
