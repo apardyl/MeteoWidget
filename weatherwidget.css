@@ -19,13 +19,21 @@
  */
 
 #weather-widget {
-    text-align: left;
     width: 620px;
     border: 1px solid #dedede;
     padding: 15px;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    height: 775px;
+    font-size: 18px;
+    color: #000;
+    text-decoration: none;
+    height: 800px;
     box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 5px;
+}
+
+.ww-main {
+    width: 620px;
+    height: 785px;
+    text-align: left;
 }
 
 #ww-stationlistdropdown {
@@ -106,4 +114,13 @@
     overflow: hidden;
     width: 620px;
     height: 445px;
+}
+
+.ww-copyright {
+    text-align: center;
+    font-size: 15px;
+}
+.ww-copyright a {
+    color: #000;
+    text-decoration: none;
 }
