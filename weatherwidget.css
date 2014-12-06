@@ -1,0 +1,106 @@
+/**
+ *
+ * Weather Widget 1.0 for MChE
+ *
+ # Copyright (c) 2014 Adam Pardyl
+
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#weather-widget {
+    text-align: left;
+    width: 620px;
+    border: 1px solid #dedede;
+    padding: 15px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 775px;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 5px;
+}
+
+#ww-stationlistdropdown {
+    width: 92%;
+    font-size: 20px;
+    border-radius: 3px;
+}
+
+#ww-dropdown {
+    text-align: center;
+    clear: both;
+}
+
+.ww-chart-menu {
+    clear: both;
+    text-align: center;
+}
+
+.ww-chart-menu ul {
+    list-style: none;
+}
+
+.ww-chart-menu li {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: 18px;
+    background: #7CB5EC;
+    padding: 5px 10px;
+    text-decoration: none;
+    float: left;
+    position: relative;
+    margin: 0 10px 30px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.ww-chart-menu li:hover {
+    background: #59a9ff;
+    text-decoration: none;
+}
+
+.ww-loading {
+    clear: both;
+    font-size: 20px;
+    margin: 50px 0;
+    text-align: center;
+    overflow:hidden;
+}
+
+.ww-current-details {
+    float: right;
+    width: 65%;
+    padding: 10px;
+    line-height: 22px;
+    font-size: 18px;
+}
+
+#ww-ta {
+    width: 30%;
+    padding-top: 75px;
+    text-align: center;
+    font-size: 42px;
+    float: left;
+}
+
+#ww-date {
+    clear: both;
+    text-align: right;
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+#ww-chart {
+    overflow: hidden;
+    width: 620px;
+    height: 445px;
+}
