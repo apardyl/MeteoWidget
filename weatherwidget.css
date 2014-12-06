@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.0.1 for MChE
+ * Weather Widget 1.0 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -32,6 +32,8 @@
     width: 92%;
     font-size: 20px;
     border-radius: 3px;
+    border-color: #7CB5EC;
+    box-shadow: rgba(124, 181, 236, 0.4) 1px 1px 2px;
 }
 
 #ww-dropdown {
@@ -61,6 +63,7 @@
     margin: 0 10px 30px;
     cursor: pointer;
     color: #ffffff;
+    box-shadow: rgba(124, 181, 236, 0.5) 1px 1px 2px;
 }
 
 .ww-chart-menu li:hover {
