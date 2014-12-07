@@ -31,7 +31,7 @@
 }
 
 .ww-main {
-    width: 620px;
+    width: auto;
     height: 785px;
     text-align: left;
 }
@@ -45,6 +45,7 @@
 }
 
 #ww-dropdown {
+    margin-top: 5px;
     text-align: center;
     clear: both;
 }
