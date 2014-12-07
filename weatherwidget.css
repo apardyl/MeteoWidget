@@ -26,7 +26,7 @@
     font-size: 18px;
     color: #000;
     text-decoration: none;
-    height: 800px;
+    height: 815px;
     box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 5px;
 }
 
@@ -124,4 +124,15 @@
 .ww-copyright a {
     color: #000;
     text-decoration: none;
+}
+
+#ww-download {
+    height: 11px;
+    text-align: right;
+    font-size: 10px;
+}
+
+#ww-download a {
+    text-decoration: none;
+    color: #000;
 }

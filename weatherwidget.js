@@ -20,6 +20,7 @@
 
 //Config
 var METEO_JSON_URL = "http://149.156.109.35/meteo/rest/json/";
+var METEO_CSV_URL = "http://149.156.109.35/meteo/rest/csv/";
 var WeatherStation = 's001'; //Default station
 //Config
 
@@ -103,12 +104,14 @@ function GetChart(parameter) {
 
     $('#ww-chart').html('<div class="ww-loading"><div>Wczytuję dane...</div>');
     $('#ww-chart-menu').html('<ul><li onclick="GetChart(\'temp\')">Temperatura</li><li onclick="GetChart(\'pres0\')">Ciśnienie</li><li onclick="GetChart(\'humi\')">Wilgotność</li><li onclick="GetChart(\'rain1\')">Opad</li><li onclick="GetChart(\'winds\')">Wiatr</li></ul>');
+    $('#ww-download').html('');
 
     var chartdata = [];
     var lastweek = new Date(today.getTime() - 604800000);
     var lastweekstr = '' + lastweek.getFullYear() + '-' + ('0' + (lastweek.getMonth() + 1)).slice(-2) + '-' + ('0' + lastweek.getDate()).slice(-2);
 
     $.getJSON(METEO_JSON_URL + parameter + '/' + WeatherStation + '/' + lastweekstr, function (json) {
+        $('#ww-download').html('<a href="' + METEO_CSV_URL + parameter  + '/' + WeatherStation + '/' + lastweekstr + '">Pobierz jako CSV</a>');
         if (parameter === 'rain1') {
             var lasthour = ParseDate(json[1].time).getHours();
             $.each(json, function (index, value) {
