@@ -32,6 +32,7 @@ var parameters = {
     rain1: {name: 'Opad godzinowy', short: 'r1', unit: ' mm'}
 };
 var IsHTMLLoaded = false;
+var today = new Date();
 
 function GetStationList() {
     $.getJSON(METEO_JSON_URL + "info", function (WeatherStatonsList) {
@@ -84,9 +85,11 @@ function GetCurrentWeather(refresh) {
         $('#ww-t0').text('Temperatura punktu rosy: ' + weather[0].data.t0 + '°C');
         $('#ww-ra').text('Opad dobowy: ' + weather[0].data.ra + ' mm');
         $('#ww-r1').text('Opad w ostatniej godzinie: ' + weather[0].data.r1 + ' mm');
-        $('#ww-wpch').text('Wysokość podstawy chmur: ' + (Math.round(((parseFloat(weather[0].data.ta) - parseFloat(weather[0].data.t0)) * 125) + parseFloat(weather[0].data.h0))) + ' m n.p.m.');
+        if(weather[0].data.h0 == 'unknown' || weather[0].data.t0 == 'unknown' || weather[0].data.ta == 'unknown') {$('#ww-wpch').text('Wysokość podstawy chmur: brak danych');}
+        else {$('#ww-wpch').text('Wysokość podstawy chmur: ' + (Math.round(((parseFloat(weather[0].data.ta) - parseFloat(weather[0].data.t0)) * 125) + parseFloat(weather[0].data.h0))) + ' m n.p.m.');}
         var wwdate = ParseDate(weather[0].time);
-        $('#ww-date').text('Ostatni pomiar: ' + ('0' + wwdate.getHours()).slice(-2) + ':' + ('0' + wwdate.getMinutes()).slice(-2) + ' ' + ('0' + wwdate.getDate()).slice(-2) + '.' + ('0' + (wwdate.getMonth() + 1)).slice(-2) + '.' + wwdate.getFullYear());
+        if(wwdate.getDate() != today.getDate()) {$('#ww-date').css('color', 'red').html('Ostatni pomiar: ' + ('0' + wwdate.getHours()).slice(-2) + ':' + ('0' + wwdate.getMinutes()).slice(-2) + '&nbsp;  ' + ('0' + wwdate.getDate()).slice(-2) + '.' + ('0' + (wwdate.getMonth() + 1)).slice(-2) + '.' + wwdate.getFullYear());}
+        else {$('#ww-date').html('Ostatni pomiar: ' + ('0' + wwdate.getHours()).slice(-2) + ':' + ('0' + wwdate.getMinutes()).slice(-2) + '&nbsp;  ' + ('0' + wwdate.getDate()).slice(-2) + '.' + ('0' + (wwdate.getMonth() + 1)).slice(-2) + '.' + wwdate.getFullYear());}
     });
 }
 
@@ -102,7 +105,6 @@ function GetChart(parameter) {
     $('#ww-chart-menu').html('<ul><li onclick="GetChart(\'temp\')">Temperatura</li><li onclick="GetChart(\'pres0\')">Ciśnienie</li><li onclick="GetChart(\'humi\')">Wilgotność</li><li onclick="GetChart(\'rain1\')">Opad</li><li onclick="GetChart(\'winds\')">Wiatr</li></ul>');
 
     var chartdata = [];
-    var today = new Date();
     var lastweek = new Date(today.getTime() - 604800000);
     var lastweekstr = '' + lastweek.getFullYear() + '-' + ('0' + (lastweek.getMonth() + 1)).slice(-2) + '-' + ('0' + lastweek.getDate()).slice(-2);
 
