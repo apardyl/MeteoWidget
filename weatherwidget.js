@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.1 for MChE
+ * Weather Widget 1.2 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -20,7 +20,6 @@
 
 //Config
 var METEO_JSON_URL = "http://149.156.109.35/meteo/rest/json/";
-var METEO_CSV_URL = "http://149.156.109.35/meteo/rest/csv/";
 var WeatherStation = 's001'; //Default station
 //Config
 
@@ -130,19 +129,19 @@ function ShowMenu(bool) {
     else {$('#ww-chart-menu').css('display', 'none');}
 }
 
+
 function GetChart(parameter) {
+    var chartdata = [];
     location.hash = WeatherStation + '&' + parameter;
     $('#ww-chart').html('<div class="ww-loading"><div>Wczytuję dane...</div>');
     ShowMenu(false);
     ShowMenuOptions(false);
     $('#ww-download').html('');
 
-    var chartdata = [];
     var lastweek = new Date(today.getTime() - 604800000);
     var lastweekstr = '' + lastweek.getFullYear() + '-' + ('0' + (lastweek.getMonth() + 1)).slice(-2) + '-' + ('0' + lastweek.getDate()).slice(-2);
 
     $.getJSON(METEO_JSON_URL + parameters[parameter].long + '/' + WeatherStation + '/' + lastweekstr, function (json) {
-        if (parameter != 'cloudh') {$('#ww-download').html('<a href="' + METEO_CSV_URL + parameter  + '/' + WeatherStation + '/' + lastweekstr + '">Pobierz jako CSV</a>');}
         if (parameter === 'rain1') {
             var lasthour = ParseDate(json[1].time).getHours();
             $.each(json, function (index, value) {
@@ -231,9 +230,21 @@ function GetChart(parameter) {
                 }
             }]
         });
+        $('#ww-download').html('<a href="' + ExportAsCSV(chartdata, parameter) + '" target="_blank" download="' + parameter + '.csv" >Pobierz jako CSV</a>');
     });
 
 }
+
+function ExportAsCSV (chartdata, parameter) {
+    var csv = 'sep=;\r\nData pomiaru;' + parameters[parameter].name + '\r\n';
+    $.each(chartdata, function(index, value) {
+        date = new Date(value[0]);
+        csv += date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + ';' + ('' + value[1]).replace('.', ',') + '\r\n';
+    });
+    csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+    return csvData;
+}
+
 
 function LoadWeatherWidget() {
     var chartdef = 'temp';
@@ -247,7 +258,7 @@ function LoadWeatherWidget() {
     GetStationList();
     GetCurrentWeather(true);
     GetChart(chartdef);
-    setInterval('GetCurrentWeather(false);', 30000);
+    setInterval('GetCurrentWeather(false);', 60000);
 }
 
 $(document).ready(LoadWeatherWidget());
