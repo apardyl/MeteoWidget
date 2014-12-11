@@ -3,7 +3,7 @@
  \/\/ (/_(_| | | |(/_|    \/\/ |(_|(_|(/_ |  for MChE
                                     _|
  *
- * Weather Widget 1.0 for MChE
+ * Weather Widget 1.1 for MChE
  *
  *
  * Copyright (c) 2014 Adam Pardyl
@@ -23,7 +23,7 @@
 
 -------------------------------------------------------------------------------------
 
- Descripcion: This program is a web interface for MChE weather database, designed to be embedded into third party websites.
+ Descripcion: Weather Widget for MChE is a web interface for MChE weather database, designed to be embedded into third party websites.
 
 -------------------------------------------------------------------------------------
 
@@ -31,9 +31,16 @@
   - Embedded: Copy all widget files except index.html into your website directory and insert widget elements from index.html into your website.
   - Standalone: Copy all widget files to your website directory.
 
- Uninstallation: Remove all widget files and other elements.
+ Uninstallation: Remove all files and other widget elements.
+
+ For embedded configuration:
+  width: 652px
+  min height: 820px
+  max height: 860px
+
 
 -------------------------------------------------------------------------------------
+
 
  Q/A:
  - Q: Will this program work with other weather databases?

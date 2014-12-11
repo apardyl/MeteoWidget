@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.0 for MChE
+ * Weather Widget 1.1 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -36,6 +36,10 @@
     text-align: left;
 }
 
+#ww-current {
+    margin: 0 0 20px
+}
+
 #ww-stationlistdropdown {
     width: 92%;
     font-size: 20px;
@@ -53,9 +57,16 @@
 .ww-chart-menu {
     clear: both;
     text-align: center;
+    height: 50px;
+    display: none;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    user-select: none;
 }
 
 .ww-chart-menu ul {
+    width: 550px;
+    margin: 0 auto;
     list-style: none;
 }
 
@@ -69,15 +80,42 @@
     text-decoration: none;
     float: left;
     position: relative;
-    margin: 0 10px 30px;
+    margin: 0 10px 10px;
     cursor: pointer;
     color: #ffffff;
     box-shadow: rgba(124, 181, 236, 0.5) 1px 1px 2px;
 }
 
+#ww-chart-menu-options ul {
+    width: 520px;
+    margin: 0 auto;
+}
+
+#ww-chart-menu-options li {
+    background: #699ad1;
+    font-size: 15px;
+}
+
+#ww-chart-menu-options li:hover {
+    background: #5980b1;
+}
+
+#ww-chart-menu-menu {
+    background: #699ad1;
+}
+
+#ww-chart-menu-menu:hover {
+    background: #5980b1;
+}
+
 .ww-chart-menu li:hover {
     background: #59a9ff;
     text-decoration: none;
+}
+
+#ww-chart-menu-options {
+    display: none;
+    clear: both;
 }
 
 .ww-loading {

@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.0 for MChE
+ * Weather Widget 1.1 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -25,12 +25,13 @@ var WeatherStation = 's001'; //Default station
 //Config
 
 var parameters = {
-    temp: {name: 'Temperatura', short: 'ta', unit: '°C'},
-    pres0: {name: 'Ciśnienie na poziomie morza', short: 'p0', unit: ' hPa'},
-    humi: {name: 'Wilgotność', short: 'ha', unit: '%'},
-    temp0: {name: 'Temperatura punktu rosy', short: 't0', unit: '°C'},
-    winds: {name: 'Prędkość wiatru', short: 'ws', unit: ' m/s'},
-    rain1: {name: 'Opad godzinowy', short: 'r1', unit: ' mm'}
+    temp: {name: 'Temperatura', short: 'ta', long: 'temp', unit: '°C'},
+    pres0: {name: 'Ciśnienie na poziomie morza', short: 'p0', long: 'pres0', unit: ' hPa'},
+    humi: {name: 'Wilgotność', short: 'ha', long: 'humi', unit: '%'},
+    temp0: {name: 'Temperatura punktu rosy', short: 't0', long: 'temp0', unit: '°C'},
+    winds: {name: 'Prędkość wiatru', short: 'ws', long: 'winds', unit: ' m/s'},
+    rain1: {name: 'Opad godzinowy', short: 'r1', long: 'rain1', unit: ' mm'},
+    cloudh: {name: 'Wysokość podstawy chmur', short: 'all', long: 'all', unit: ' m n.p.m.'}
 };
 var IsHTMLLoaded = false;
 var today = new Date();
@@ -99,19 +100,49 @@ function ParseDate(datestring) {
     return new Date(xstr[0], xstr[1] - 1, xstr[2], xstr[3], xstr[4], xstr[5]);
 }
 
+
+var AreOptionsVisible = false;
+function ShowMenuOptions(bool)
+{
+    if(bool !== undefined)
+    {
+        if(bool == AreOptionsVisible) { return; }
+        else AreOptionsVisible = !(bool && !AreOptionsVisible);
+    }
+    if (AreOptionsVisible) {
+        $('#ww-chart-menu-options').css('display', 'none');
+        $('#ww-chart-menu').css('height', '-=40px');
+        $('.ww-main').css('height', '-=40px');
+        $('#weather-widget').css('height', '-=40px');
+        AreOptionsVisible = false;
+    }
+    else {
+        $('#ww-chart-menu-options').css('display', 'block');
+        $('#ww-chart-menu').css('height', '+=40px');
+        $('.ww-main').css('height', '+=40px');
+        $('#weather-widget').css('height', '+=40px');
+        AreOptionsVisible = true;
+    }
+}
+
+function ShowMenu(bool) {
+    if(bool) {$('#ww-chart-menu').css('display', 'block');}
+    else {$('#ww-chart-menu').css('display', 'none');}
+}
+
 function GetChart(parameter) {
     location.hash = WeatherStation + '&' + parameter;
-
     $('#ww-chart').html('<div class="ww-loading"><div>Wczytuję dane...</div>');
-    $('#ww-chart-menu').html('<ul><li onclick="GetChart(\'temp\')">Temperatura</li><li onclick="GetChart(\'pres0\')">Ciśnienie</li><li onclick="GetChart(\'humi\')">Wilgotność</li><li onclick="GetChart(\'rain1\')">Opad</li><li onclick="GetChart(\'winds\')">Wiatr</li></ul>');
+    ShowMenu(false);
+    ShowMenuOptions(false);
     $('#ww-download').html('');
 
     var chartdata = [];
     var lastweek = new Date(today.getTime() - 604800000);
     var lastweekstr = '' + lastweek.getFullYear() + '-' + ('0' + (lastweek.getMonth() + 1)).slice(-2) + '-' + ('0' + lastweek.getDate()).slice(-2);
 
-    $.getJSON(METEO_JSON_URL + parameter + '/' + WeatherStation + '/' + lastweekstr, function (json) {
-        $('#ww-download').html('<a href="' + METEO_CSV_URL + parameter  + '/' + WeatherStation + '/' + lastweekstr + '">Pobierz jako CSV</a>');
+    $.getJSON(METEO_JSON_URL + parameters[parameter].long + '/' + WeatherStation + '/' + lastweekstr, function (json) {
+        if (parameter != 'cloudh') {$('#ww-download').html('<a href="' + METEO_CSV_URL + parameter  + '/' + WeatherStation + '/' + lastweekstr + '">Pobierz jako CSV</a>');}
         if (parameter === 'rain1') {
             var lasthour = ParseDate(json[1].time).getHours();
             $.each(json, function (index, value) {
@@ -123,6 +154,16 @@ function GetChart(parameter) {
                 }
             });
         }
+
+        else if (parameter == 'cloudh') {
+            $.each(json, function (index, value) {
+
+                var x = ParseDate(value.time);
+                var y = Math.round(((parseFloat(value.data[parameters.temp.short]) - parseFloat(value.data[parameters.temp0.short])) * 125) + parseFloat(value.data.h0));
+                chartdata.push([x.getTime(), y]);
+            });
+        }
+
         else {
             $.each(json, function (index, value) {
 
@@ -150,9 +191,10 @@ function GetChart(parameter) {
         }
         if (json.length != 0) {
             charttitle = parameters[parameter].name;
+            ShowMenu(true);
         }
         else {
-            $('#ww-chart-menu').html('');
+            ShowMenu(false);
         }
         $('#ww-chart').highcharts('StockChart', {
             title: {
