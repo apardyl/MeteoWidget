@@ -236,10 +236,10 @@ function GetChart(parameter) {
 }
 
 function ExportAsCSV (chartdata, parameter) {
-    var csv = 'sep=;\r\nData pomiaru;' + parameters[parameter].name + '\r\n';
+    var csv = 'sep=;\r\nData pomiaru;' + parameters[parameter].name + ';Jednostka\r\n';
     $.each(chartdata, function(index, value) {
         date = new Date(value[0]);
-        csv += date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + ';' + ('' + value[1]).replace('.', ',') + '\r\n';
+        csv += date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + ';' + ('' + value[1]).replace('.', ',') + ';' + parameters[parameter].unit + '\r\n';
     });
     csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
     return csvData;
