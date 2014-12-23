@@ -3,7 +3,7 @@
  \/\/ (/_(_| | | |(/_|    \/\/ |(_|(_|(/_ |  for MChE
                                     _|
  *
- * Weather Widget 1.2 for MChE
+ * Weather Widget 1.3 for MChE
  *
  *
  * Copyright (c) 2014 Adam Pardyl
@@ -28,21 +28,30 @@
 -------------------------------------------------------------------------------------
 
  Installation:
-  - Embedded: Copy all widget files except index.html into your website directory and insert widget elements from index.html into your website.
+  - Embedded: Copy all widget files except index.html into your website directory, insert widget elements from index.html into place, where you want the widget to be displayed. Make sure you do not duplicate jquery-min script, that might already be included in your website.
   - Standalone: Copy all widget files to your website directory.
 
  Uninstallation: Remove all files and other widget elements.
 
  For embedded configuration:
   width: 652px
-  min height: 820px
-  max height: 860px
-
+  min height: 847px
+  max height: 947px
 
 -------------------------------------------------------------------------------------
 
+ Tested on:
+ - Google Chrome 39.0
+ - Mozilla Firefox 34.0
+ - IE11
+
+ Known Issues:
+ - Exporting to CSV do not work under IE
+-------------------------------------------------------------------------------------
 
  Q/A:
+ - Q: Does it require any server-side configuration?
+   A: Nope, It's entirely client-side application.
  - Q: Will this program work with other weather databases?
    A: No, unless the database structure is identical or the scripts extensively modified.
  - Q: Program hangs on loading
@@ -54,6 +63,6 @@
 
 -------------------------------------------------------------------------------------
 
-This program is based upon Highcharts (http://www.highcharts.com/) and jQuery (http://jquery.com/).
+This program is based upon Highcharts (http://www.highcharts.com/), jQuery (http://jquery.com/) and JQuery UI (http://jqueryui.com/).
 
 -------------------------------------------------------------------------------------

@@ -3,24 +3,25 @@
 <head lang="pl">
     <meta charset="UTF-8">
 
-    <!--  Weather Widget 1.2 !-->
+    <!--  Weather Widget 1.3 !-->
 
     <!--  Check if not duplicates another jQuery-min (+1.5 required)  !-->
     <script src="jquery-2.1.1.min.js"></script>
 
-
+    <script src="jquery-ui.js"></script>
     <script src="highcharts.js"></script>
     <script src="weatherwidget.js"></script>
     <link rel="stylesheet" type="text/css" href="weatherwidget.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css">
 
-    <!--  /Weather Widget 1.2 !-->
+    <!--  /Weather Widget 1.3 !-->
 
     <title>Meteo</title>
 </head>
 <body>
 <div style="margin: 50px auto 0; width: 620px;">
 
-    <!--  Weather Widget 1.2 !-->
+    <!--  Weather Widget 1.3 !-->
 
 <div id="weather-widget">
     <div class="ww-main">
@@ -38,11 +39,16 @@
     </ul>
         </div>
     <div id="ww-chart-menu-options">
-        <ul>
+        <div><ul>
             <li onclick="GetChart('humi')">Wilgotność</li>
             <li onclick="GetChart('temp0')">Temperatura p. rosy</li>
             <li onclick="GetChart('cloudh')">Wysokość podstawy chmur</li>
-        </ul>
+        </ul></div>
+        <div class="ww-chart-menu-date">
+            <label for="fromdate">Od:</label><input type="text" id="fromdate">
+            <label for="todate">Do:</label><input type="text" id="todate">
+            <div class="ww-chart-menu-button" onclick="SetChartDates()">Zatwierdź</div>
+        </div>
     </div>
 </div>
 <div id="ww-chart"><script>document.write('<div class="ww-loading">Wczytuję dane...</div>')</script><noscript><div class="ww-loading">Twoja przeglądarka nie obsługuje Javascript :(</div></noscript></div>
@@ -51,7 +57,7 @@
 <div class="ww-copyright"><a href="https://github.com/apardyl/MeteoWidget">Copyright © 2014 Adam Pardyl</a></div>
 </div>
 
-    <!--  /Weather Widget 1.2 !-->
+    <!--  /Weather Widget 1.3 !-->
 
 </div>
 </body>

@@ -1,6 +1,6 @@
 /**
  *
- * Weather Widget 1.2 for MChE
+ * Weather Widget 1.3 for MChE
  *
  # Copyright (c) 2014 Adam Pardyl
 
@@ -17,10 +17,14 @@
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+var today = new Date();
 //Config
 var METEO_JSON_URL = "http://149.156.109.35/meteo/rest/json/";
 var WeatherStation = 's001'; //Default station
+var ChartParameter = 'temp';
+var ChartFrom = new Date(today.getTime() - 604800000).getTime();
+var ChartTo = today.getTime();
+
 //Config
 
 var parameters = {
@@ -33,7 +37,6 @@ var parameters = {
     cloudh: {name: 'Wysokość podstawy chmur', short: 'all', long: 'all', unit: ' m n.p.m.'}
 };
 var IsHTMLLoaded = false;
-var today = new Date();
 
 function GetStationList() {
     $.getJSON(METEO_JSON_URL + "info", function (WeatherStatonsList) {
@@ -99,7 +102,6 @@ function ParseDate(datestring) {
     return new Date(xstr[0], xstr[1] - 1, xstr[2], xstr[3], xstr[4], xstr[5]);
 }
 
-
 var AreOptionsVisible = false;
 function ShowMenuOptions(bool)
 {
@@ -110,16 +112,18 @@ function ShowMenuOptions(bool)
     }
     if (AreOptionsVisible) {
         $('#ww-chart-menu-options').css('display', 'none');
-        $('#ww-chart-menu').css('height', '-=40px');
-        $('.ww-main').css('height', '-=40px');
-        $('#weather-widget').css('height', '-=40px');
+        $('#ww-chart-menu').css('height', '-=100px');
+        $('.ww-main').css('height', '-=100px');
+        $('#weather-widget').css('height', '-=100px');
+        $('#ww-chart-menu-menu').text('☰ Więcej');
         AreOptionsVisible = false;
     }
     else {
         $('#ww-chart-menu-options').css('display', 'block');
-        $('#ww-chart-menu').css('height', '+=40px');
-        $('.ww-main').css('height', '+=40px');
-        $('#weather-widget').css('height', '+=40px');
+        $('#ww-chart-menu').css('height', '+=100px');
+        $('.ww-main').css('height', '+=100px');
+        $('#weather-widget').css('height', '+=100px');
+        $('#ww-chart-menu-menu').text('☰ Mniej');
         AreOptionsVisible = true;
     }
 }
@@ -129,135 +133,175 @@ function ShowMenu(bool) {
     else {$('#ww-chart-menu').css('display', 'none');}
 }
 
+function GetLocationHash() {
+    return {station: location.hash.substring(1).split('&')[0], parameter: location.hash.substring(1).split('&')[1], from: parseInt(location.hash.substring(1).split('&')[2]), to: parseInt(location.hash.substring(1).split('&')[3])};
+}
+function SetLocationHash() {
+    location.hash = WeatherStation + '&' + ChartParameter + '&' + ChartFrom + '&' + ChartTo;
+}
+
+function SetChartDates() {
+    var fromdate = $('#fromdate').val();
+    var todate = $('#todate').val();
+    ChartFrom = (new Date(fromdate.split('-')[0], fromdate.split('-')[1] - 1, fromdate.split('-')[2], 0,0,0,1)).getTime();
+    ChartTo = (new Date(todate.split('-')[0], todate.split('-')[1] - 1, todate.split('-')[2], 0,0,0,1)).getTime();
+    LoadChart();
+}
+
+function DrawChart(chartdata) {
+    var charttitle = '';
+    var charttype = 'line';
+    var YAxis = {
+        labels: {
+            format: '{value}' + parameters[ChartParameter].unit
+        }};
+    if(ChartParameter==='winds'){
+        YAxis = {
+            labels: {
+                format: '{value}' + parameters[ChartParameter].unit
+            },
+            min: 0
+        };
+    }
+    if (ChartParameter == 'rain1') {
+        charttype = 'column';
+    }
+    if (chartdata.length > 0) {
+        charttitle = parameters[ChartParameter].name;
+        ShowMenu(true);
+        var fdate = new Date(ChartFrom); var tdate = new Date(ChartTo);
+        $('#fromdate').datepicker({dateFormat: "yy-mm-dd", firstDay: 1}).val(fdate.getFullYear() + '-' + ('0' + (fdate.getMonth()+1)).slice(-2) + '-' + ('0' + fdate.getDate()).slice(-2));
+        $('#todate').datepicker({dateFormat: "yy-mm-dd", firstDay: 1}).val(tdate.getFullYear() + '-' + ('0' + (tdate.getMonth()+1)).slice(-2) + '-' + ('0' + tdate.getDate()).slice(-2));
+
+    }
+    else {
+        ShowMenu(false);
+    }
+    $('#ww-chart').highcharts('StockChart', {
+        title: {
+            text: charttitle
+        },
+        credits: {
+            enabled: false
+        },
+        rangeSelector: {
+            enabled: false
+        },
+        yAxis: YAxis,
+        xAxis: {
+            dateTimeLabelFormats: {
+                millisecond: '%H:%M:%S.%L',
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%d.%m.%y',
+                week: '%d.%m',
+                month: '%m \'%y',
+                year: '%Y'
+            }
+        },
+        tooltip: {
+            valueSuffix: parameters[ChartParameter].unit
+        },
+        series: [{
+            type: charttype,
+            name: parameters[ChartParameter].name,
+            data: chartdata,
+            tooltip: {
+                valueDecimals: 1
+            }
+        }]
+    });
+    $('#ww-download').html('<a href="' + ExportAsCSV(chartdata, ChartParameter) + '" target="_blank" download="' + ChartParameter + '.csv" >Pobierz jako CSV</a>');
+}
+
+
+function LoadChartData(chartdata, from, to, part, of) {
+    var fromd = new Date(from);
+    var tod = new Date(Math.min(to, from + 2678400000));
+    var fromstr = '' + fromd.getFullYear() + '-' + ('0' + (fromd.getMonth() + 1)).slice(-2) + '-' + ('0' + fromd.getDate()).slice(-2);
+    var tostr = '' + tod.getFullYear() + '-' + ('0' + (tod.getMonth() + 1)).slice(-2) + '-' + ('0' + tod.getDate()).slice(-2);
+
+    $.getJSON(METEO_JSON_URL + parameters[ChartParameter].long + '/' + WeatherStation + '/' + fromstr + '/' + tostr, function (json) {
+        if(json.length>2) {
+            if (ChartParameter === 'rain1') {
+                var lasthour = ParseDate(json[1].time).getHours();
+                $.each(json, function (index, value) {
+                    var x = ParseDate(value.time);
+                    if (lasthour != x.getHours()) {
+                        lasthour = x.getHours();
+                        var y = parseFloat(value.data[parameters[ChartParameter].short]);
+                        chartdata.push([x.getTime(), y]);
+                    }
+                });
+            }
+
+            else if (ChartParameter == 'cloudh') {
+                $.each(json, function (index, value) {
+
+                    var x = ParseDate(value.time);
+                    var y = Math.round(((parseFloat(value.data[parameters.temp.short]) - parseFloat(value.data[parameters.temp0.short])) * 125) + parseFloat(value.data.h0));
+                    chartdata.push([x.getTime(), y]);
+                });
+            }
+
+            else {
+                $.each(json, function (index, value) {
+
+                    var x = ParseDate(value.time);
+                    var y = parseFloat(value.data[parameters[ChartParameter].short]);
+                    chartdata.push([x.getTime(), y]);
+                });
+            }
+        }
+            if (part == of) {
+                DrawChart(chartdata);
+            }
+            else {
+                $('#ww-chart').html('<div class="ww-loading"><div>Wczytuję dane... ' + (Math.round(part / of * 100)) + '%</div>');
+                LoadChartData(chartdata, from + 2764800000, to, (part + 1), of);
+            }
+        });
+}
 
 function GetChart(parameter) {
+    if (parameter !== undefined) {ChartParameter = parameter;}
+    LoadChart();
+}
+
+function LoadChart() {
     var chartdata = [];
-    location.hash = WeatherStation + '&' + parameter;
+    SetLocationHash(WeatherStation, ChartParameter, ChartFrom, ChartTo);
     $('#ww-chart').html('<div class="ww-loading"><div>Wczytuję dane...</div>');
     ShowMenu(false);
     ShowMenuOptions(false);
     $('#ww-download').html('');
-
-    var lastweek = new Date(today.getTime() - 604800000);
-    var lastweekstr = '' + lastweek.getFullYear() + '-' + ('0' + (lastweek.getMonth() + 1)).slice(-2) + '-' + ('0' + lastweek.getDate()).slice(-2);
-
-    $.getJSON(METEO_JSON_URL + parameters[parameter].long + '/' + WeatherStation + '/' + lastweekstr, function (json) {
-        if (parameter === 'rain1') {
-            var lasthour = ParseDate(json[1].time).getHours();
-            $.each(json, function (index, value) {
-                var x = ParseDate(value.time);
-                if (lasthour != x.getHours()) {
-                    lasthour = x.getHours();
-                    var y = parseFloat(value.data[parameters[parameter].short]);
-                    chartdata.push([x.getTime(), y]);
-                }
-            });
-        }
-
-        else if (parameter == 'cloudh') {
-            $.each(json, function (index, value) {
-
-                var x = ParseDate(value.time);
-                var y = Math.round(((parseFloat(value.data[parameters.temp.short]) - parseFloat(value.data[parameters.temp0.short])) * 125) + parseFloat(value.data.h0));
-                chartdata.push([x.getTime(), y]);
-            });
-        }
-
-        else {
-            $.each(json, function (index, value) {
-
-                var x = ParseDate(value.time);
-                var y = parseFloat(value.data[parameters[parameter].short]);
-                chartdata.push([x.getTime(), y]);
-            });
-        }
-        var charttitle = '';
-        var charttype = 'line';
-        var YAxis = {
-            labels: {
-                format: '{value}' + parameters[parameter].unit
-            }};
-        if(parameter==='winds'){
-            YAxis = {
-                labels: {
-                    format: '{value}' + parameters[parameter].unit
-                },
-                min: 0
-            };
-        }
-        if (parameter == 'rain1') {
-            charttype = 'column';
-        }
-        if (json.length != 0) {
-            charttitle = parameters[parameter].name;
-            ShowMenu(true);
-        }
-        else {
-            ShowMenu(false);
-        }
-        $('#ww-chart').highcharts('StockChart', {
-            title: {
-                text: charttitle
-            },
-            credits: {
-                enabled: false
-            },
-            rangeSelector: {
-                enabled: false
-            },
-            yAxis: YAxis,
-            xAxis: {
-                dateTimeLabelFormats: {
-                    millisecond: '%H:%M:%S.%L',
-                    second: '%H:%M:%S',
-                    minute: '%H:%M',
-                    hour: '%H:%M',
-                    day: '%d.%m.%y',
-                    week: '%d.%m',
-                    month: '%m \'%y',
-                    year: '%Y'
-                }
-            },
-            tooltip: {
-                valueSuffix: parameters[parameter].unit
-            },
-            series: [{
-                type: charttype,
-                name: parameters[parameter].name,
-                data: chartdata,
-                tooltip: {
-                    valueDecimals: 1
-                }
-            }]
-        });
-        $('#ww-download').html('<a href="' + ExportAsCSV(chartdata, parameter) + '" target="_blank" download="' + parameter + '.csv" >Pobierz jako CSV</a>');
-    });
-
+    LoadChartData(chartdata, ChartFrom, ChartTo, 1, Math.floor((ChartTo - ChartFrom)/2678400000) + 1);
 }
 
 function ExportAsCSV (chartdata, parameter) {
     var csv = 'sep=;\r\nData pomiaru;' + parameters[parameter].name + ';Jednostka\r\n';
     $.each(chartdata, function(index, value) {
-        date = new Date(value[0]);
+        var date = new Date(value[0]);
         csv += date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2) + ';' + ('' + value[1]).replace('.', ',') + ';' + parameters[parameter].unit + '\r\n';
     });
-    csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
-    return csvData;
+    //csvData = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    var csvData = new Blob([csv], { type: 'text/csv' });
+    return URL.createObjectURL(csvData);
 }
 
 
 function LoadWeatherWidget() {
-    var chartdef = 'temp';
     if (location.hash.length > 2) {
-        WeatherStation = location.hash.substring(1).split('&')[0];
-        if (location.hash.substring(1).split('&')[1] !== undefined) {
-            chartdef = location.hash.substring(1).split('&')[1];
-        }
+        var settings = GetLocationHash();
+        WeatherStation = settings.station;
+        ChartParameter = settings.parameter;
+        ChartFrom = settings.from;
+        ChartTo = settings.to;
     }
-
     GetStationList();
     GetCurrentWeather(true);
-    GetChart(chartdef);
+    GetChart();
     setInterval('GetCurrentWeather(false);', 60000);
 }
 
