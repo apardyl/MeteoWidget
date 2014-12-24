@@ -112,18 +112,12 @@ function ShowMenuOptions(bool)
     }
     if (AreOptionsVisible) {
         $('#ww-chart-menu-options').css('display', 'none');
-        $('#ww-chart-menu').css('height', '-=100px');
-        $('.ww-main').css('height', '-=100px');
-        $('#weather-widget').css('height', '-=100px');
         $('#ww-chart-menu-menu').text('☰ Więcej');
         AreOptionsVisible = false;
     }
     else {
         $('#ww-chart-menu-options').css('display', 'block');
-        $('#ww-chart-menu').css('height', '+=100px');
-        $('.ww-main').css('height', '+=100px');
-        $('#weather-widget').css('height', '+=100px');
-        $('#ww-chart-menu-menu').text('☰ Mniej');
+        $('#ww-chart-menu-menu').text('☰ Ukryj');
         AreOptionsVisible = true;
     }
 }

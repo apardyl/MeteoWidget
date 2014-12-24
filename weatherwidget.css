@@ -89,15 +89,28 @@
 #ww-chart-menu-options ul {
     width: 520px;
     margin: 0 auto;
+    list-style: none;
 }
 
 #ww-chart-menu-options li {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
     background: #699ad1;
     font-size: 15px;
+    padding: 5px 10px;
+    text-decoration: none;
+    float: left;
+    position: relative;
+    margin: 0 10px 10px;
+    cursor: pointer;
+    color: #ffffff;
+    box-shadow: rgba(124, 181, 236, 0.5) 1px 1px 2px;
 }
 
 #ww-chart-menu-options li:hover {
     background: #5980b1;
+    text-decoration: none;
 }
 
 #ww-chart-menu-menu {
@@ -118,6 +131,10 @@
     clear: both;
     border: 1px solid #dedede;
     padding: 10px;
+    position: relative;
+    background-color: #fff;
+    z-index: 9999;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 2px;
 }
 
 .ww-loading {

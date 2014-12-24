@@ -35,8 +35,7 @@
 
  For embedded configuration:
   width: 652px
-  min height: 847px
-  max height: 947px
+  height: 847px
 
 -------------------------------------------------------------------------------------
 
