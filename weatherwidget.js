@@ -126,6 +126,13 @@ function ShowMenuOptions(bool)
         $('#ww-chart-menu-options').css('display', 'block');
         $('#ww-chart-menu-menu').text('☰ Ukryj');
         AreOptionsVisible = true;
+        $('html').click(function(event) {
+            if(!$(event.target).parents().andSelf().is("#ww-chart-menu-options") && !$(event.target).parents().andSelf().is("#ww-chart-menu-menu")) {
+                ShowMenuOptions(false);
+                $(this).unbind(event);
+            }
+
+        })
     }
 }
 
