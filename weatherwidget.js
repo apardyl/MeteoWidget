@@ -111,15 +111,8 @@ function ShowMenuOptions(bool)
         else AreOptionsVisible = !(bool && !AreOptionsVisible);
     }
     if (AreOptionsVisible) {
-        $('#ww-chart-menu-options').css('display', 'none').click(function(event){
-            event.stopPropagation();
-        });
-        $('#ww-chart-menu-menu').text('☰ Więcej').click(function(event){
-            event.stopPropagation();
-        });
-        $('html').click(function() {
-            ShowMenuOptions(false);
-        });
+        $('#ww-chart-menu-options').css('display', 'none');
+        $('#ww-chart-menu-menu').text('☰ Więcej');
         AreOptionsVisible = false;
     }
     else {
@@ -127,11 +120,10 @@ function ShowMenuOptions(bool)
         $('#ww-chart-menu-menu').text('☰ Ukryj');
         AreOptionsVisible = true;
         $('html').click(function(event) {
-            if(!$(event.target).parents().andSelf().is("#ww-chart-menu-options") && !$(event.target).parents().andSelf().is("#ww-chart-menu-menu")) {
+            if(!$(event.target).parents().andSelf().is("#ww-chart-menu-options") && !$(event.target).parents().andSelf().is("#ww-chart-menu-menu") && !$(event.target).parents().andSelf().is(".ui-datepicker") && !$(event.target).parents().andSelf().is(".ui-corner-all")) {
                 ShowMenuOptions(false);
                 $(this).unbind(event);
             }
-
         })
     }
 }
