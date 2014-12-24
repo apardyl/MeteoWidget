@@ -111,8 +111,15 @@ function ShowMenuOptions(bool)
         else AreOptionsVisible = !(bool && !AreOptionsVisible);
     }
     if (AreOptionsVisible) {
-        $('#ww-chart-menu-options').css('display', 'none');
-        $('#ww-chart-menu-menu').text('☰ Więcej');
+        $('#ww-chart-menu-options').css('display', 'none').click(function(event){
+            event.stopPropagation();
+        });
+        $('#ww-chart-menu-menu').text('☰ Więcej').click(function(event){
+            event.stopPropagation();
+        });
+        $('html').click(function() {
+            ShowMenuOptions(false);
+        });
         AreOptionsVisible = false;
     }
     else {
