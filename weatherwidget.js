@@ -231,7 +231,7 @@ function LoadChartData(chartdata, from, to, part, of) {
                     if (lasthour != x.getHours()) {
                         lasthour = x.getHours();
                         var y = parseFloat(value.data[parameters[ChartParameter].short]);
-                        chartdata.push([x.getTime(), y]);
+                        if(!isNaN(y) && !isNaN(x.getTime())) {chartdata.push([x.getTime(), y]);}
                     }
                 });
             }
@@ -241,7 +241,7 @@ function LoadChartData(chartdata, from, to, part, of) {
 
                     var x = ParseDate(value.time);
                     var y = Math.round(((parseFloat(value.data[parameters.temp.short]) - parseFloat(value.data[parameters.temp0.short])) * 125) + parseFloat(value.data.h0));
-                    chartdata.push([x.getTime(), y]);
+                    if(!isNaN(y) && !isNaN(x.getTime())) {chartdata.push([x.getTime(), y]);}
                 });
             }
 
@@ -250,7 +250,7 @@ function LoadChartData(chartdata, from, to, part, of) {
 
                     var x = ParseDate(value.time);
                     var y = parseFloat(value.data[parameters[ChartParameter].short]);
-                    chartdata.push([x.getTime(), y]);
+                    if(!isNaN(y) && !isNaN(x.getTime())) {chartdata.push([x.getTime(), y]);}
                 });
             }
         }
