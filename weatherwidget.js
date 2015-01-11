@@ -172,7 +172,7 @@ function DrawChart(chartdata) {
         var fdate = new Date(ChartFrom); var tdate = new Date(ChartTo);
         $('#fromdate').datepicker({dateFormat: "yy-mm-dd", firstDay: 1}).val(fdate.getFullYear() + '-' + ('0' + (fdate.getMonth()+1)).slice(-2) + '-' + ('0' + fdate.getDate()).slice(-2));
         $('#todate').datepicker({dateFormat: "yy-mm-dd", firstDay: 1}).val(tdate.getFullYear() + '-' + ('0' + (tdate.getMonth()+1)).slice(-2) + '-' + ('0' + tdate.getDate()).slice(-2));
-
+            $('#ww-download').html('<a href="' + ExportAsCSV(chartdata, ChartParameter) + '" target="_blank" download="' + parameters[ChartParameter].name + ' ' + ('0' + fdate.getDate()).slice(-2) + '.' + ('0' + (fdate.getMonth() + 1)).slice(-2) + '.' + fdate.getFullYear() + ' - ' + ('0' + tdate.getDate()).slice(-2) + '.' + ('0' + (tdate.getMonth() + 1)).slice(-2) + '.' + tdate.getFullYear() + '.csv" >Pobierz jako CSV</a>');
     }
     else {
         ShowMenu(false);
@@ -212,7 +212,6 @@ function DrawChart(chartdata) {
             }
         }]
     });
-    $('#ww-download').html('<a href="' + ExportAsCSV(chartdata, ChartParameter) + '" target="_blank" download="' + ChartParameter + '.csv" >Pobierz jako CSV</a>');
 }
 
 
